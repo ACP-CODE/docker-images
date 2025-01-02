@@ -37,7 +37,7 @@ version: '3.8'
 services:
   mongo:
     image: mongo:8.0.4
-    container_name: apostrophe-mongo
+    container_name: mongo-01
     ports:
       - "27017:27017"
     volumes:
