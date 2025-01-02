@@ -31,6 +31,10 @@ jobs:
             ["redis"]="latest"
             ["nginx"]="stable"
             ["ubuntu"]="latest"
+            ["postgres"]="latest"
+            ["dart"]="latest"
+            ["swift"]="latest"
+            ["sickcodes/docker-osx"]="latest"
           )
           
           # 遍历并处理每个镜像
@@ -46,11 +50,11 @@ jobs:
             docker push ghcr.io/$OWNER/$image:$tag
             
             # 设置包为公开访问
-            gh api \
-              --method PATCH \
-              -H "Accept: application/vnd.github.v3+json" \
-              /orgs/$OWNER/packages/container/$image/visibility \
-              -f visibility='public'
+            # gh api \
+            #   --method PATCH \
+            #   -H "Accept: application/vnd.github.v3+json" \
+            #   /orgs/$OWNER/packages/container/$image/visibility \
+            #   -f visibility='public'
               
             # 保存镜像到文件
             # echo "Saving $image:$tag to file..."
