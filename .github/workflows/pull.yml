@@ -1,0 +1,36 @@
+name: Docker Image Pull and Push
+
+on:
+  # 手动触发工作流
+  workflow_dispatch:
+    inputs:
+      image_name:
+        description: '需要拉取的镜像名称 (例如: mongo)'
+        required: true
+      image_tag:
+        description: '镜像标签 (例如: latest)'
+        required: true
+        default: 'latest'
+
+jobs:
+  pull-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 登录到 GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 拉取并推送 Docker 镜像
+        run: |
+          # 拉取原始镜像
+          docker pull ${{ github.event.inputs.image_name }}:${{ github.event.inputs.image_tag }}
+          
+          # 标记为 GHCR 镜像
+          docker tag ${{ github.event.inputs.image_name }}:${{ github.event.inputs.image_tag }} \
+            ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.image_name }}:${{ github.event.inputs.image_tag }}
+          
+          # 推送到 GHCR
+          docker push ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.image_name }}:${{ github.event.inputs.image_tag }}
