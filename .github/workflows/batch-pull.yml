@@ -50,32 +50,6 @@ jobs:
             docker save $image:$tag | gzip > docker-images/$image-$tag.tar.gz
           done
 
-        run: |
-          # 定义要拉取的镜像列表
-          declare -A images=(
-            ["mongo"]="latest"
-            ["redis"]="latest"
-            ["nginx"]="stable"
-            ["ubuntu"]="latest"
-          )
-          
-          # 遍历并处理每个镜像
-          for image in "${!images[@]}"; do
-            tag="${images[$image]}"
-            echo "Processing $image:$tag..."
-            
-            # 拉取镜像
-            docker pull $image:$tag
-            
-            # 推送到 GHCR
-            docker tag $image:$tag ghcr.io/${{ github.repository_owner }}/$image:$tag
-            docker push ghcr.io/${{ github.repository_owner }}/$image:$tag
-            
-            # 保存镜像到文件
-            echo "Saving $image:$tag to file..."
-            docker save $image:$tag | gzip > docker-images/$image-$tag.tar.gz
-          done
-
       - name: 提交镜像文件到仓库
         run: |
           git config --global user.name "GitHub Actions Bot"
