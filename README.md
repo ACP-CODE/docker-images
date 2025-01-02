@@ -65,6 +65,6 @@ docker-compose down
 ```
 </details>
 
-# License
+## License
 
 MIT
