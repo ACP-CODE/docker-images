@@ -45,9 +45,16 @@ jobs:
             docker tag $image:$tag ghcr.io/$OWNER/$image:$tag
             docker push ghcr.io/$OWNER/$image:$tag
             
+            # 设置包为公开访问
+            gh api \
+              --method PATCH \
+              -H "Accept: application/vnd.github.v3+json" \
+              /orgs/$OWNER/packages/container/$image/visibility \
+              -f visibility='public'
+              
             # 保存镜像到文件
-            echo "Saving $image:$tag to file..."
-            docker save $image:$tag | gzip > docker-images/$image-$tag.tar.gz
+            # echo "Saving $image:$tag to file..."
+            # docker save $image:$tag | gzip > docker-images/$image-$tag.tar.gz
           done
 
       # - name: 提交镜像文件到仓库
