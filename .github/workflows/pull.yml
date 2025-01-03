@@ -1,4 +1,4 @@
-name: Docker Image Pull and Push
+name: 拉取镜像并推送到 GitHub Container Registry  
 
 on:
   # 手动触发工作流
