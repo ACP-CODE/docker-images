@@ -1,4 +1,4 @@
-name: 批量拉取镜像并推送到 GitHub Container Registry  
+name: Pull latest images to GHCR from Docker Hub
 
 on:
   workflow_dispatch:
